@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Draw a card</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+<body>
+    <div class="container grid-md">
+        <header class="navbar">
+            <section class="navbar-section">
+                <a href="/" class="navbar-brand">Draw A Card</a></section>
+            <section class="navbar-section">
+                <a href="/about/index.html" class="btn btn-link">About</a>
+                <a href="/settings/index.html" class="btn btn-link">Settings</a>
+            </section>
+        </header>
+        <div class="hero hero-sm hide-sm"></div>
+        <main id="app">
+            <div class="card">
+                <div class="card-header">
+                    <a href="https://drawabox.com/lesson/1/superimposedlines"
+                       target="_blank"
+                       class="float-right"
+                    >
+                        View homework details
+                    </a>
+                    <div class="card-title h5">Superimposed lines</div>
+                    <div class="card-subtitle text-gray">Lesson 1: Lines, Ellipses and Boxes</div>
+                </div>
+
+                <div class="card-body">
+                    <p id="greeting">loading...</p>oooh
+                    <p>Rate your work:</p>
+                    <div class="btn-group btn-group-block">
+                        <button class="btn btn-lg ">It didn't go well</button>
+                        <button class="btn btn-lg">Okay, but needs work</button>
+                        <button class="btn btn-lg ">It was almost perfect!</button>
+                    </div>
+                </div>
+                <div class="card-image">
+                    <img src="https://d15v304a6xpq4b.cloudfront.net/lesson_images/152f6270.jpg" class="img-responsive">
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/main.ts"></script>
+</body>
+</html>

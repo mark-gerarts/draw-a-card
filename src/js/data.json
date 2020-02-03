@@ -1,23 +1,25 @@
-[
-    {
-        "id": "1SIL",
-        "title": "Superimposed lines",
-        "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
-        "detailsLink": "https://drawabox.com/lesson/1/superimposedlines",
-        "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/152f6270.jpg"
-    },
-    {
-        "id": "1GL",
-        "title": "Ghosted lines",
-        "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
-        "detailsLink": "https://drawabox.com/lesson/1/ghostedlines",
-        "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/eb15ff84.jpg"
-    },
-    {
-        "id": "1SIL",
-        "title": "Ghosted planes",
-        "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
-        "detailsLink": "https://drawabox.com/lesson/1/ghostedplanes",
-        "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/b5b9f548.jpg"
-    }
-]
+{
+    "exercises": [
+        {
+            "id": "1SIL",
+            "title": "Superimposed lines",
+            "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+            "detailsLink": "https://drawabox.com/lesson/1/superimposedlines",
+            "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/152f6270.jpg"
+        },
+        {
+            "id": "1GL",
+            "title": "Ghosted lines",
+            "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+            "detailsLink": "https://drawabox.com/lesson/1/ghostedlines",
+            "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/eb15ff84.jpg"
+        },
+        {
+            "id": "1GP",
+            "title": "Ghosted planes",
+            "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+            "detailsLink": "https://drawabox.com/lesson/1/ghostedplanes",
+            "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/b5b9f548.jpg"
+        }
+    ]
+}

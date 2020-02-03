@@ -12,5 +12,12 @@
         "gh-pages": "^1.2.0",
         "parcel-bundler": "^1.9.7",
         "typescript": "^2.9.2"
+    },
+    "dependencies": {
+        "parcel-plugin-html-root-syntax": "0.0.3",
+        "vue": "^2.6.11"
+    },
+    "alias": {
+        "vue": "./node_modules/vue/dist/vue.common.js"
     }
 }

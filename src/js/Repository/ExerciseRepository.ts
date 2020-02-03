@@ -1,11 +1,11 @@
-import { Exercise } from "./Exercise";
-import exercisesData from "./data.json";
+import { Exercise } from "../Model/Exercise";
+import exercisesData from "../data.json";
 
 export class ExerciseRepository {
     private exercises: Array<Exercise>;
 
     constructor() {
-        this.exercises = exercisesData.map(data => this.parse(data));
+        this.exercises = exercisesData.exercises.map(data => this.parse(data));
     }
 
     findAll(): Array<Exercise> {

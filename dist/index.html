@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 </head>
 <body>
     <div class="container grid-md">
@@ -23,17 +21,17 @@
         </header>
         <div class="hero hero-sm hide-sm"></div>
         <main id="app">
-            <div class="card">
+            <div class="card" v-if="currentCard">
                 <div class="card-header">
-                    <a href="https://drawabox.com/lesson/1/superimposedlines" target="_blank" class="float-right">
+                    <a :href="currentCard.exercise.detailsLink" target="_blank" class="float-right">
                         View homework details
                     </a>
-                    <div class="card-title h5">Superimposed lines</div>
-                    <div class="card-subtitle text-gray">Lesson 1: Lines, Ellipses and Boxes</div>
+                    <div class="card-title h5">{{ currentCard.exercise.title }}</div>
+                    <div class="card-subtitle text-gray">{{ currentCard.exercise.subtitle }}</div>
                 </div>
 
                 <div class="card-body">
-                    <p id="greeting">loading...</p>oooh
+                    <p id="greeting"></p>
                     <p>Rate your work:</p>
                     <div class="btn-group btn-group-block">
                         <button class="btn btn-lg ">It didn't go well</button>
@@ -42,7 +40,7 @@
                     </div>
                 </div>
                 <div class="card-image">
-                    <img src="https://d15v304a6xpq4b.cloudfront.net/lesson_images/152f6270.jpg" class="img-responsive">
+                    <img :src="currentCard.exercise.image" class="img-responsive">
                 </div>
             </div>
         </main>

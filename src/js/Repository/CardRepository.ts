@@ -1,4 +1,4 @@
-import { Card } from "./Card";
+import { Card } from "../Model/Card";
 import { ExerciseRepository } from "./ExerciseRepository";
 
 export class CardRepository {
@@ -18,6 +18,12 @@ export class CardRepository {
 
     findByExerciseId(exerciseId: string): Card|null {
         return this.cards[exerciseId] || null;
+    }
+
+    findRandom(): Card|null {
+        var keys = Object.keys(this.cards);
+
+        return this.cards[keys[keys.length * Math.random() << 0]];
     }
 
     private init() {

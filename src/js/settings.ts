@@ -12,7 +12,8 @@ new Vue({
 
     data: {
         cards: cardRepository.findAll(),
-        maxLevel: data.maximumLevel
+        maxLevel: data.maximumLevel,
+        enableAllValue: false
     },
 
     methods: {
@@ -23,6 +24,23 @@ new Vue({
 
         persist: function(card: Card) {
             cardRepository.persist(card);
+        },
+
+        selectAll: function() {
+
+        }
+    },
+
+    computed: {
+        areAllCardsEnabled: {
+            get: function() {
+                return cardRepository.findAll().every(card => card.enabled);
+            },
+
+            set: function (newValue: boolean) {
+                var allCards = cardRepository.findAll();
+                allCards.forEach(card => card.enabled = newValue);
+            }
         }
     }
 });

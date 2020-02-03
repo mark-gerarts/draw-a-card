@@ -12303,7 +12303,8 @@ new _vue.default({
   el: '#app',
   data: {
     cards: cardRepository.findAll(),
-    maxLevel: _data.default.maximumLevel
+    maxLevel: _data.default.maximumLevel,
+    enableAllValue: false
   },
   methods: {
     setLevel: function setLevel(card, level) {
@@ -12312,6 +12313,22 @@ new _vue.default({
     },
     persist: function persist(card) {
       cardRepository.persist(card);
+    },
+    selectAll: function selectAll() {}
+  },
+  computed: {
+    areAllCardsEnabled: {
+      get: function get() {
+        return cardRepository.findAll().every(function (card) {
+          return card.enabled;
+        });
+      },
+      set: function set(newValue) {
+        var allCards = cardRepository.findAll();
+        allCards.forEach(function (card) {
+          return card.enabled = newValue;
+        });
+      }
     }
   }
 });
@@ -12343,7 +12360,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34857" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46625" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

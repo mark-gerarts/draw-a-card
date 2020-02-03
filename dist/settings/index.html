@@ -23,6 +23,14 @@
         <h1>Settings</h1>
 
         <main id="app">
+
+
+            <div class="form-group">
+                <label class="form-switch">
+                    <input type="checkbox" v-model="areAllCardsEnabled" v-on:change="selectAll">
+                    <i class="form-icon"></i> Enable all
+                </label>
+            </div>
             <table class="table">
                 <thead>
                     <tr>
@@ -34,7 +42,10 @@
                 <tbody>
                     <tr v-for="card in cards">
                         <td>
-                            <input type="checkbox" v-model="card.enabled" v-on:change="persist(card)">
+                            <label class="form-switch">
+                                <input type="checkbox" v-model="card.enabled" v-on:change="persist(card)">
+                                <i class="form-icon"></i>
+                            </label>
                         </td>
                         <td>{{ card.exercise.title }}</td>
                         <td>

@@ -20,6 +20,43 @@
             </section>
         </header>
         <div class="hero hero-sm hide-sm"></div>
-        <h1>Settings page coming here!</h1>
+        <h1>Settings</h1>
+
+        <main id="app">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Enabled</th>
+                        <th>Name</th>
+                        <th>Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="card in cards">
+                        <td>
+                            <input type="checkbox"
+                                   v-model="card.enabled"
+                                   v-on:change="persist(card)"
+                            >
+                        </td>
+                        <td>{{ card.exercise.title }}</td>
+                        <td>
+                            <div class="btn-group btn-group-block">
+                                <button class="btn"
+                                        v-for="level in maxLevel"
+                                        v-bind:class="{active: level == card.level}"
+                                        v-on:click="setLevel(card, level)"
+                                >
+                                    {{ level }}
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script src="/js/settings.ts"></script>
 </body>
 </html>

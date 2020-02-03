@@ -1,4 +1,4 @@
-import { Exercise } from "../Model/Exercise";
+import { Exercise } from "./Exercise";
 import exercisesData from "../data.json";
 
 export class ExerciseRepository {

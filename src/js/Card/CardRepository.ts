@@ -1,5 +1,5 @@
-import { Card } from "../Model/Card";
-import { ExerciseRepository } from "./ExerciseRepository";
+import { Card } from "./Card";
+import { ExerciseRepository } from "../Exercise/ExerciseRepository";
 
 export class CardRepository {
     private exerciseRepository: ExerciseRepository;
@@ -7,6 +7,7 @@ export class CardRepository {
 
     constructor(exerciseRepository: ExerciseRepository) {
         this.exerciseRepository = exerciseRepository;
+        this.cards = {};
         this.init();
     }
 
@@ -24,6 +25,10 @@ export class CardRepository {
         var keys = Object.keys(this.cards);
 
         return this.cards[keys[keys.length * Math.random() << 0]];
+    }
+
+    findAll(): Array<Card> {
+        return Object.values(this.cards);
     }
 
     private init() {

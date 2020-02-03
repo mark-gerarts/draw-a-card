@@ -31,13 +31,24 @@
                 </div>
 
                 <div class="card-body">
-                    <p id="greeting"></p>
-                    <p>Rate your work:</p>
-                    <div class="btn-group btn-group-block">
-                        <button class="btn btn-lg ">It didn't go well</button>
-                        <button class="btn btn-lg">Okay, but needs work</button>
-                        <button class="btn btn-lg ">It was almost perfect!</button>
-                    </div>
+                    <template v-if="!finished">
+                        <p>Rate your work:</p>
+                        <div class="btn-group btn-group-block">
+                            <button class="btn btn-lg" v-on:click="evaluateCard(-1)">
+                                It didn't go well
+                            </button>
+                            <button class="btn btn-lg" v-on:click="evaluateCard(0)">
+                                Okay, but needs work
+                            </button>
+                            <button class="btn btn-lg" v-on:click="evaluateCard(1)">
+                                It was almost perfect!
+                            </button>
+                        </div>
+                    </template>
+                    <template v-else="">
+                        <p>Great job, on to your next drawing!</p>
+                        <button class="btn btn-lg" v-on:click="reset">Just one more exercise!</button>
+                    </template>
                 </div>
                 <div class="card-image">
                     <img :src="currentCard.exercise.image" class="img-responsive">

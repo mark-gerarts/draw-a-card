@@ -316,41 +316,6 @@ function () {
 }();
 
 exports.CardRepository = CardRepository;
-},{"./Card":"js/Card/Card.ts"}],"js/Card/CardInitializer.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CardInitializer = void 0;
-
-var _Card = require("./Card");
-
-var CardInitializer =
-/** @class */
-function () {
-  function CardInitializer(cardRepository, exerciseRepository) {
-    this.cardRepository = cardRepository;
-    this.exerciseRepository = exerciseRepository;
-  }
-
-  CardInitializer.prototype.initialize = function () {
-    var _this = this;
-
-    var defaultLevel = 1;
-    var defaultStatus = true;
-    var allExercises = this.exerciseRepository.findAll();
-    allExercises.forEach(function (exercise) {
-      var card = new _Card.Card(exercise, defaultLevel, defaultStatus);
-
-      _this.cardRepository.persist(card);
-    });
-  };
-
-  return CardInitializer;
-}();
-
-exports.CardInitializer = CardInitializer;
 },{"./Card":"js/Card/Card.ts"}],"../node_modules/vue/dist/vue.common.dev.js":[function(require,module,exports) {
 var global = arguments[3];
 /*!
@@ -12319,14 +12284,14 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./vue.common.dev.js');
 }
-},{"./vue.common.dev.js":"../node_modules/vue/dist/vue.common.dev.js"}],"js/main.ts":[function(require,module,exports) {
+},{"./vue.common.dev.js":"../node_modules/vue/dist/vue.common.dev.js"}],"js/settings.js":[function(require,module,exports) {
 "use strict";
 
 var _ExerciseRepository = require("./Exercise/ExerciseRepository");
 
 var _CardRepository = require("./Card/CardRepository");
 
-var _CardInitializer = require("./Card/CardInitializer");
+var _data = _interopRequireDefault(require("./data.json"));
 
 var _vue = _interopRequireDefault(require("vue"));
 
@@ -12334,31 +12299,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var exerciseRepository = new _ExerciseRepository.ExerciseRepository();
 var cardRepository = new _CardRepository.CardRepository(exerciseRepository);
-var cardInitializer = new _CardInitializer.CardInitializer(cardRepository, exerciseRepository);
-cardInitializer.initialize();
 new _vue.default({
   el: '#app',
   data: {
-    finished: false,
-    currentCard: cardRepository.findRandom()
-  },
-  methods: {
-    evaluateCard: function evaluateCard(rating) {
-      if (!this.currentCard) {
-        return;
-      }
-
-      this.currentCard.evaluate(rating);
-      cardRepository.persist(this.currentCard);
-      this.finished = true;
-    },
-    reset: function reset() {
-      this.finished = false;
-      this.currentCard = cardRepository.findRandom();
-    }
+    cards: cardRepository.findAll(),
+    maxLevel: _data.default.maximumLevel
   }
 });
-},{"./Exercise/ExerciseRepository":"js/Exercise/ExerciseRepository.ts","./Card/CardRepository":"js/Card/CardRepository.ts","./Card/CardInitializer":"js/Card/CardInitializer.ts","vue":"../node_modules/vue/dist/vue.common.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./Exercise/ExerciseRepository":"js/Exercise/ExerciseRepository.ts","./Card/CardRepository":"js/Card/CardRepository.ts","./data.json":"js/data.json","vue":"../node_modules/vue/dist/vue.common.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -12386,7 +12334,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34857" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38217" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -12562,5 +12510,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/main.ts"], null)
-//# sourceMappingURL=/main.7ebd0bc5.js.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/settings.js"], null)
+//# sourceMappingURL=/settings.f4763184.js.map

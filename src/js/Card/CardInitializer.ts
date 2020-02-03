@@ -1,6 +1,6 @@
-import { CardRepository } from "./Repository/CardRepository";
-import { ExerciseRepository } from "./Repository/ExerciseRepository";
-import { Card } from "./Model/Card";
+import { CardRepository } from "./CardRepository";
+import { ExerciseRepository } from "../Exercise/ExerciseRepository";
+import { Card } from "./Card";
 
 export class CardInitializer {
     private cardRepository: CardRepository;

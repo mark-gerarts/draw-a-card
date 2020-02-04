@@ -203,6 +203,54 @@ module.exports = {
     "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
     "detailsLink": "https://drawabox.com/lesson/1/organicperspective",
     "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/598a86fb.jpg"
+  }, {
+    "id": "2OA",
+    "title": "Organic Arrows",
+    "subtitle": "Lesson 2: Contour Lines, Texture and Construction",
+    "detailsLink": "https://drawabox.com/lesson/2/organicarrows",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/4e36a27a.jpg"
+  }, {
+    "id": "2CL",
+    "title": "Organic Forms with Contour Lines",
+    "subtitle": "Lesson 2: Contour Lines, Texture and Construction",
+    "detailsLink": "https://drawabox.com/lesson/2/contourlines",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/07c7e90b.jpg"
+  }, {
+    "id": "2TA",
+    "title": "Texture Analysis",
+    "subtitle": "Lesson 2: Contour Lines, Texture and Construction",
+    "detailsLink": "https://drawabox.com/lesson/2/textureanalysis",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/42e498b3.jpg"
+  }, {
+    "id": "2D",
+    "title": "Dissections",
+    "subtitle": "Lesson 2: Contour Lines, Texture and Construction",
+    "detailsLink": "https://drawabox.com/lesson/2/dissections",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/c1773a25.jpg"
+  }, {
+    "id": "2FI",
+    "title": "Form Intersections",
+    "subtitle": "Lesson 2: Contour Lines, Texture and Construction",
+    "detailsLink": "https://drawabox.com/lesson/2/formintersections",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/21fdb0a5.jpg"
+  }, {
+    "id": "2OI",
+    "title": "Organic Intersections",
+    "subtitle": "Lesson 2: Contour Lines, Texture and Construction",
+    "detailsLink": "https://drawabox.com/lesson/2/organicintersections",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/07fd0fa0.jpg"
+  }, {
+    "id": "CB",
+    "title": "Boxes",
+    "subtitle": "250 Box Challenge",
+    "detailsLink": "https://drawabox.com/lesson/250boxes",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/980a575e.jpg"
+  }, {
+    "id": "CC",
+    "title": "Cylinders",
+    "subtitle": "250 Cylinders Challenge",
+    "detailsLink": "https://drawabox.com/lesson/250cylinders",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/4b7132ee.jpg"
   }]
 };
 },{}],"js/Exercise/ExerciseRepository.ts":[function(require,module,exports) {

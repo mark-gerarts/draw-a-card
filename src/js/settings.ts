@@ -3,9 +3,13 @@ import { CardRepository } from "./Card/CardRepository";
 import data from "./data.json";
 import Vue from "vue";
 import { Card } from "./Card/Card";
+import { CardInitializer } from "./Card/CardInitializer";
 
 var exerciseRepository = new ExerciseRepository();
 var cardRepository = new CardRepository(exerciseRepository);
+var cardInitializer = new CardInitializer(cardRepository, exerciseRepository);
+
+cardInitializer.initialize();
 
 new Vue({
     el: '#app',
@@ -39,7 +43,10 @@ new Vue({
 
             set: function (newValue: boolean) {
                 var allCards = cardRepository.findAll();
-                allCards.forEach(card => card.enabled = newValue);
+                allCards.forEach(card => {
+                    card.enabled = newValue;
+                    cardRepository.persist(card);
+                });
             }
         }
     }

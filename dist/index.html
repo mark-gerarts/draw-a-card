@@ -19,7 +19,9 @@
                 <a href="/settings/index.html" class="btn btn-link">Settings</a>
             </section>
         </header>
-        <div class="hero hero-sm hide-sm"></div>
+        <div class="hero hero-sm hide-sm">
+            <h1>Your exercise for today:</h1>
+        </div>
         <main id="app">
             <div class="card" v-if="currentCard">
                 <div class="card-header">
@@ -47,7 +49,7 @@
                     </template>
                     <template v-else="">
                         <p>Great job, on to your next drawing!</p>
-                        <button class="btn btn-lg" v-on:click="reset">Just one more exercise!</button>
+                        <button class="btn btn-lg" v-on:click="reset">Give me one more exercise!</button>
                     </template>
                 </div>
                 <div class="card-image">

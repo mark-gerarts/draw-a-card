@@ -1,5 +1,6 @@
 import { Card } from "./Card";
 import { ExerciseRepository } from "../Exercise/ExerciseRepository";
+import { ArrayUtils } from "../Util/ArrayUtils";
 
 export class CardRepository {
     private exerciseRepository: ExerciseRepository;
@@ -24,11 +25,15 @@ export class CardRepository {
     findRandom(): Card|null {
         var keys = Object.keys(this.cards);
 
-        return this.cards[keys[keys.length * Math.random() << 0]];
+        return this.cards[ArrayUtils.randomElement(keys)];
     }
 
     findAll(): Array<Card> {
         return Object.values(this.cards);
+    }
+
+    findAllEnabled(): Array<Card> {
+        return this.findAll().filter(card => card.enabled);
     }
 
     private init() {

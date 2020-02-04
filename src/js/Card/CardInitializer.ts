@@ -12,6 +12,11 @@ export class CardInitializer {
     }
 
     initialize() {
+        // We initialized before.
+        if (this.cardRepository.findAll().length > 0) {
+            return;
+        }
+
         const defaultLevel = 1;
         const defaultStatus = true;
         const allExercises = this.exerciseRepository.findAll();

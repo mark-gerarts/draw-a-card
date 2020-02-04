@@ -2,10 +2,12 @@ import { ExerciseRepository } from "./Exercise/ExerciseRepository";
 import { CardRepository } from "./Card/CardRepository";
 import { CardInitializer } from "./Card/CardInitializer";
 import Vue from "vue";
+import { CardSelector } from "./Card/CardSelector";
 
 var exerciseRepository = new ExerciseRepository();
 var cardRepository = new CardRepository(exerciseRepository);
 var cardInitializer = new CardInitializer(cardRepository, exerciseRepository);
+var cardSelector = new CardSelector(cardRepository);
 
 cardInitializer.initialize();
 
@@ -14,7 +16,7 @@ new Vue({
 
     data: {
         finished: false,
-        currentCard: cardRepository.findRandom()
+        currentCard: cardSelector.getNextCard()
     },
 
     methods: {
@@ -30,7 +32,7 @@ new Vue({
 
         reset: function() {
             this.finished = false;
-            this.currentCard = cardRepository.findRandom();
+            this.currentCard = cardSelector.getNextCard();
         }
     }
 });

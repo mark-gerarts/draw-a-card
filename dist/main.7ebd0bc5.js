@@ -142,6 +142,7 @@ function () {
 exports.Exercise = Exercise;
 },{}],"js/data.json":[function(require,module,exports) {
 module.exports = {
+  "maximumLevel": 5,
   "exercises": [{
     "id": "1SIL",
     "title": "Superimposed lines",
@@ -160,8 +161,49 @@ module.exports = {
     "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
     "detailsLink": "https://drawabox.com/lesson/1/ghostedplanes",
     "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/b5b9f548.jpg"
-  }],
-  "maximumLevel": 5
+  }, {
+    "id": "1TOE",
+    "title": "Tables of Ellipses",
+    "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+    "detailsLink": "https://drawabox.com/lesson/1/tablesofellipses",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/d7edac3e.jpg"
+  }, {
+    "id": "1EIP",
+    "title": "Ellipses in Planes",
+    "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+    "detailsLink": "https://drawabox.com/lesson/1/ellipsesinplanes",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/2e0e6d89.jpg"
+  }, {
+    "id": "1F",
+    "title": "Funnels",
+    "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+    "detailsLink": "https://drawabox.com/lesson/1/funnels",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/166e969b.jpg"
+  }, {
+    "id": "1PP",
+    "title": "Plotted Perspective",
+    "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+    "detailsLink": "https://drawabox.com/lesson/1/plottedperspective",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/6378cbe0.jpg"
+  }, {
+    "id": "1RP",
+    "title": "Rough Perspective",
+    "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+    "detailsLink": "https://drawabox.com/lesson/1/roughperspective",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/ac56f948.jpg"
+  }, {
+    "id": "1RB",
+    "title": "Rotated Boxes",
+    "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+    "detailsLink": "https://drawabox.com/lesson/1/rotatedboxes",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/9a2db6a0.jpg"
+  }, {
+    "id": "1OP",
+    "title": "Organic Perspective",
+    "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+    "detailsLink": "https://drawabox.com/lesson/1/organicperspective",
+    "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/598a86fb.jpg"
+  }]
 };
 },{}],"js/Exercise/ExerciseRepository.ts":[function(require,module,exports) {
 "use strict";
@@ -243,7 +285,32 @@ function () {
 }();
 
 exports.Card = Card;
-},{"../data.json":"js/data.json"}],"js/Card/CardRepository.ts":[function(require,module,exports) {
+},{"../data.json":"js/data.json"}],"js/Util/ArrayUtils.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ArrayUtils = void 0;
+
+var ArrayUtils =
+/** @class */
+function () {
+  function ArrayUtils() {}
+
+  ArrayUtils.flatten = function (array) {
+    return Array.prototype.concat.apply([], array);
+  };
+
+  ArrayUtils.randomElement = function (array) {
+    return array[array.length * Math.random() << 0];
+  };
+
+  return ArrayUtils;
+}();
+
+exports.ArrayUtils = ArrayUtils;
+},{}],"js/Card/CardRepository.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -252,6 +319,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.CardRepository = void 0;
 
 var _Card = require("./Card");
+
+var _ArrayUtils = require("../Util/ArrayUtils");
 
 var CardRepository =
 /** @class */
@@ -278,11 +347,17 @@ function () {
 
   CardRepository.prototype.findRandom = function () {
     var keys = Object.keys(this.cards);
-    return this.cards[keys[keys.length * Math.random() << 0]];
+    return this.cards[_ArrayUtils.ArrayUtils.randomElement(keys)];
   };
 
   CardRepository.prototype.findAll = function () {
     return Object.values(this.cards);
+  };
+
+  CardRepository.prototype.findAllEnabled = function () {
+    return this.findAll().filter(function (card) {
+      return card.enabled;
+    });
   };
 
   CardRepository.prototype.init = function () {
@@ -316,7 +391,7 @@ function () {
 }();
 
 exports.CardRepository = CardRepository;
-},{"./Card":"js/Card/Card.ts"}],"js/Card/CardInitializer.ts":[function(require,module,exports) {
+},{"./Card":"js/Card/Card.ts","../Util/ArrayUtils":"js/Util/ArrayUtils.ts"}],"js/Card/CardInitializer.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -335,7 +410,12 @@ function () {
   }
 
   CardInitializer.prototype.initialize = function () {
-    var _this = this;
+    var _this = this; // We initialized before.
+
+
+    if (this.cardRepository.findAll().length > 0) {
+      return;
+    }
 
     var defaultLevel = 1;
     var defaultStatus = true;
@@ -12319,7 +12399,68 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./vue.common.dev.js');
 }
-},{"./vue.common.dev.js":"../node_modules/vue/dist/vue.common.dev.js"}],"js/main.ts":[function(require,module,exports) {
+},{"./vue.common.dev.js":"../node_modules/vue/dist/vue.common.dev.js"}],"js/Card/CardSelector.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CardSelector = void 0;
+
+var _data = _interopRequireDefault(require("../data.json"));
+
+var _ArrayUtils = require("../Util/ArrayUtils");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CardSelector =
+/** @class */
+function () {
+  function CardSelector(cardRepository) {
+    this.cardRepository = cardRepository;
+    this.seenExerciseIds = [];
+  }
+
+  CardSelector.prototype.getNextCard = function () {
+    var _this = this;
+
+    var allCards = this.cardRepository.findAllEnabled();
+
+    if (allCards.length === 0) {
+      return null;
+    } // Filter out cards we already got this session to prevent duplicates.
+
+
+    var unseenCards = allCards.filter(function (card) {
+      return !_this.seenExerciseIds.includes(card.exercise.id);
+    }); // If this results in an empty array, start over again.
+
+    if (unseenCards.length === 0) {
+      this.seenExerciseIds = [];
+      unseenCards = allCards;
+    } // We lazily create a weighted distribution based on the card's level,
+    // and pick a random element from that.
+
+
+    var maximumLevel = _data.default.maximumLevel;
+    var distribution = unseenCards.map(function (card) {
+      var numberOfOccurences = maximumLevel - card.level + 1;
+      return Array(numberOfOccurences).fill(card);
+    });
+
+    var flattenedDistribution = _ArrayUtils.ArrayUtils.flatten(distribution);
+
+    var selectedCard = _ArrayUtils.ArrayUtils.randomElement(flattenedDistribution);
+
+    this.seenExerciseIds.push(selectedCard.exercise.id);
+    return selectedCard;
+  };
+
+  return CardSelector;
+}();
+
+exports.CardSelector = CardSelector;
+},{"../data.json":"js/data.json","../Util/ArrayUtils":"js/Util/ArrayUtils.ts"}],"js/main.ts":[function(require,module,exports) {
 "use strict";
 
 var _ExerciseRepository = require("./Exercise/ExerciseRepository");
@@ -12330,17 +12471,20 @@ var _CardInitializer = require("./Card/CardInitializer");
 
 var _vue = _interopRequireDefault(require("vue"));
 
+var _CardSelector = require("./Card/CardSelector");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var exerciseRepository = new _ExerciseRepository.ExerciseRepository();
 var cardRepository = new _CardRepository.CardRepository(exerciseRepository);
 var cardInitializer = new _CardInitializer.CardInitializer(cardRepository, exerciseRepository);
+var cardSelector = new _CardSelector.CardSelector(cardRepository);
 cardInitializer.initialize();
 new _vue.default({
   el: '#app',
   data: {
     finished: false,
-    currentCard: cardRepository.findRandom()
+    currentCard: cardSelector.getNextCard()
   },
   methods: {
     evaluateCard: function evaluateCard(rating) {
@@ -12354,11 +12498,11 @@ new _vue.default({
     },
     reset: function reset() {
       this.finished = false;
-      this.currentCard = cardRepository.findRandom();
+      this.currentCard = cardSelector.getNextCard();
     }
   }
 });
-},{"./Exercise/ExerciseRepository":"js/Exercise/ExerciseRepository.ts","./Card/CardRepository":"js/Card/CardRepository.ts","./Card/CardInitializer":"js/Card/CardInitializer.ts","vue":"../node_modules/vue/dist/vue.common.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./Exercise/ExerciseRepository":"js/Exercise/ExerciseRepository.ts","./Card/CardRepository":"js/Card/CardRepository.ts","./Card/CardInitializer":"js/Card/CardInitializer.ts","vue":"../node_modules/vue/dist/vue.common.js","./Card/CardSelector":"js/Card/CardSelector.ts"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -12386,7 +12530,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46625" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43809" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

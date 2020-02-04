@@ -1,4 +1,5 @@
 {
+    "maximumLevel": 5,
     "exercises": [
         {
             "id": "1SIL",
@@ -20,7 +21,55 @@
             "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
             "detailsLink": "https://drawabox.com/lesson/1/ghostedplanes",
             "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/b5b9f548.jpg"
+        },
+        {
+            "id": "1TOE",
+            "title": "Tables of Ellipses",
+            "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+            "detailsLink": "https://drawabox.com/lesson/1/tablesofellipses",
+            "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/d7edac3e.jpg"
+        },
+        {
+            "id": "1EIP",
+            "title": "Ellipses in Planes",
+            "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+            "detailsLink": "https://drawabox.com/lesson/1/ellipsesinplanes",
+            "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/2e0e6d89.jpg"
+        },
+        {
+            "id": "1F",
+            "title": "Funnels",
+            "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+            "detailsLink": "https://drawabox.com/lesson/1/funnels",
+            "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/166e969b.jpg"
+        },
+        {
+            "id": "1PP",
+            "title": "Plotted Perspective",
+            "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+            "detailsLink": "https://drawabox.com/lesson/1/plottedperspective",
+            "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/6378cbe0.jpg"
+        },
+        {
+            "id": "1RP",
+            "title": "Rough Perspective",
+            "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+            "detailsLink": "https://drawabox.com/lesson/1/roughperspective",
+            "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/ac56f948.jpg"
+        },
+        {
+            "id": "1RB",
+            "title": "Rotated Boxes",
+            "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+            "detailsLink": "https://drawabox.com/lesson/1/rotatedboxes",
+            "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/9a2db6a0.jpg"
+        },
+        {
+            "id": "1OP",
+            "title": "Organic Perspective",
+            "subtitle": "Lesson 1: Lines, Ellipses and Boxes",
+            "detailsLink": "https://drawabox.com/lesson/1/organicperspective",
+            "exampleImage": "https://d15v304a6xpq4b.cloudfront.net/lesson_images/598a86fb.jpg"
         }
-    ],
-    "maximumLevel": 5
+    ]
 }

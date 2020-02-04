@@ -30,12 +30,15 @@
                 appearing.
             </p>
 
-            <div class="form-group">
+            <div class="form-group float-left">
                 <label class="form-switch">
-                    <input type="checkbox" v-model="areAllCardsEnabled" v-on:change="selectAll">
+                    <input type="checkbox" v-model="areAllCardsEnabled">
                     <i class="form-icon"></i> Enable all
                 </label>
             </div>
+            <button class="btn btn-error float-right" v-on:click="resetAll">
+                Reset everything
+            </button>
             <table class="table">
                 <thead>
                     <tr>

@@ -36,6 +36,11 @@ export class CardRepository {
         return this.findAll().filter(card => card.enabled);
     }
 
+    deleteAll() {
+        this.cards = [];
+        localStorage.removeItem('cards');
+    }
+
     private init() {
         this.cards = {};
         var cardData = localStorage.getItem('cards') || "[]";

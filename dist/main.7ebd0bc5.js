@@ -360,6 +360,11 @@ function () {
     });
   };
 
+  CardRepository.prototype.deleteAll = function () {
+    this.cards = [];
+    localStorage.removeItem('cards');
+  };
+
   CardRepository.prototype.init = function () {
     var _this = this;
 

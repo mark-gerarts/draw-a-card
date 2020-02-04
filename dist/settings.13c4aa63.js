@@ -360,6 +360,11 @@ function () {
     });
   };
 
+  CardRepository.prototype.deleteAll = function () {
+    this.cards = [];
+    localStorage.removeItem('cards');
+  };
+
   CardRepository.prototype.init = function () {
     var _this = this;
 
@@ -12399,7 +12404,32 @@ function () {
 }();
 
 exports.CardInitializer = CardInitializer;
-},{"./Card":"js/Card/Card.ts"}],"js/settings.ts":[function(require,module,exports) {
+},{"./Card":"js/Card/Card.ts"}],"js/Settings/SettingsManager.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SettingsManager = void 0;
+
+var SettingsManager =
+/** @class */
+function () {
+  function SettingsManager(cardInitializer, cardRepository) {
+    this.cardInitializer = cardInitializer;
+    this.cardRepository = cardRepository;
+  }
+
+  SettingsManager.prototype.resetAll = function () {
+    this.cardRepository.deleteAll();
+    this.cardInitializer.initialize();
+  };
+
+  return SettingsManager;
+}();
+
+exports.SettingsManager = SettingsManager;
+},{}],"js/settings.ts":[function(require,module,exports) {
 "use strict";
 
 var _ExerciseRepository = require("./Exercise/ExerciseRepository");
@@ -12412,18 +12442,20 @@ var _vue = _interopRequireDefault(require("vue"));
 
 var _CardInitializer = require("./Card/CardInitializer");
 
+var _SettingsManager = require("./Settings/SettingsManager");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var exerciseRepository = new _ExerciseRepository.ExerciseRepository();
 var cardRepository = new _CardRepository.CardRepository(exerciseRepository);
 var cardInitializer = new _CardInitializer.CardInitializer(cardRepository, exerciseRepository);
+var settingsManager = new _SettingsManager.SettingsManager(cardInitializer, cardRepository);
 cardInitializer.initialize();
 new _vue.default({
   el: '#app',
   data: {
     cards: cardRepository.findAll(),
-    maxLevel: _data.default.maximumLevel,
-    enableAllValue: false
+    maxLevel: _data.default.maximumLevel
   },
   methods: {
     setLevel: function setLevel(card, level) {
@@ -12433,12 +12465,22 @@ new _vue.default({
     persist: function persist(card) {
       cardRepository.persist(card);
     },
-    selectAll: function selectAll() {}
+    resetAll: function resetAll() {
+      var confirmed = window.confirm('This will reset all settings, are you sure you want to continue?');
+
+      if (!confirmed) {
+        return;
+      }
+
+      settingsManager.resetAll();
+      this.cards = cardRepository.findAll();
+      this.$forceUpdate();
+    }
   },
   computed: {
     areAllCardsEnabled: {
       get: function get() {
-        return cardRepository.findAll().every(function (card) {
+        return this.cards.every(function (card) {
           return card.enabled;
         });
       },
@@ -12452,7 +12494,7 @@ new _vue.default({
     }
   }
 });
-},{"./Exercise/ExerciseRepository":"js/Exercise/ExerciseRepository.ts","./Card/CardRepository":"js/Card/CardRepository.ts","./data.json":"js/data.json","vue":"../node_modules/vue/dist/vue.common.js","./Card/CardInitializer":"js/Card/CardInitializer.ts"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./Exercise/ExerciseRepository":"js/Exercise/ExerciseRepository.ts","./Card/CardRepository":"js/Card/CardRepository.ts","./data.json":"js/data.json","vue":"../node_modules/vue/dist/vue.common.js","./Card/CardInitializer":"js/Card/CardInitializer.ts","./Settings/SettingsManager":"js/Settings/SettingsManager.ts"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

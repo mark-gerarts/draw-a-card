@@ -48,7 +48,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="card in cards">
+                    <tr v-for="card in regularExerciseCards">
                         <td>
                             <label class="form-switch">
                                 <input type="checkbox" v-model="card.enabled" v-on:change="persist(card)">
@@ -66,6 +66,86 @@
                     </tr>
                 </tbody>
             </table>
+
+            <div class="hero hero-sm"></div>
+
+            <h2 class="py-2">Custom exercises</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Enabled</th>
+                        <th>Title</th>
+                        <th>Level</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-if="customExerciseCards.length === 0">
+                        <td colspan="4">No custom exercises added. Create your first!</td>
+                    </tr>
+                    <tr v-for="card in customExerciseCards">
+                        <td>
+                            <label class="form-switch">
+                                <input type="checkbox" v-model="card.enabled" v-on:change="persist(card)">
+                                <i class="form-icon"></i>
+                            </label>
+                        </td>
+                        <td>
+                            {{ card.exercise.title }}
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-block">
+                                <button class="btn" v-for="level in maxLevel" v-bind:class="{active: level == card.level}" v-on:click="setLevel(card, level)">
+                                    {{ level }}
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-block">
+                                <button class="btn" v-on:click="editCustomExercise(card)">
+                                    <i class="icon icon-edit"></i>
+                                </button>
+                                <button class="btn" v-on:click="deleteCustomExercise(card)">
+                                    <i class="icon icon-delete"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button class="btn btn-success mt-2 float-right" v-on:click="showExerciseForm = true">
+                <i class="icon icon-plus"></i>
+                Add a custom exercise
+            </button>
+
+            <div class="hero hero-sm"></div>
+
+            <div class="modal" v-bind:class="{ active: showExerciseForm}">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <a href="#close" class="btn btn-clear float-right" aria-label="Close" v-on:click="closeExerciseForm">
+                        </a>
+                        <div class="modal-title h5">Modal title</div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="content">
+                            <form id="custom-exercise-form" v-on:submit="persistCustomExercise">
+                                <div class="form-group">
+                                    <label class="form-label" for="input-title">Title</label>
+                                    <input class="form-input" type="text" id="input-title" placeholder="Title" v-model="exercise.title" required="required">
+
+                                    <label class="form-label" for="input-image">Link to image (optional)</label>
+                                    <input class="form-input" type="text" id="input-image" placeholder="https://example.com" v-model="exercise.image">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" form="custom-exercise-form">Save</button>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 

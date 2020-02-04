@@ -128,12 +128,17 @@ exports.Exercise = void 0;
 var Exercise =
 /** @class */
 function () {
-  function Exercise(id, title, subtitle, detailsLink, image) {
+  function Exercise(id, title, subtitle, detailsLink, image, isCustom) {
+    if (isCustom === void 0) {
+      isCustom = false;
+    }
+
     this.id = id;
     this.title = title;
     this.subtitle = subtitle;
     this.detailsLink = detailsLink;
     this.image = image;
+    this.isCustom = isCustom;
   }
 
   return Exercise;
@@ -273,23 +278,89 @@ function () {
   function ExerciseRepository() {
     var _this = this;
 
-    this.exercises = _data.default.exercises.map(function (data) {
-      return _this.parse(data);
+    this.exercises = {};
+    var exercises = _data.default.exercises;
+    var customExercisesData = localStorage.getItem('customExercises') || '[]';
+    var customExercises = JSON.parse(customExercisesData);
+    Array.prototype.push.apply(exercises, customExercises);
+    exercises.map(function (data) {
+      return _this.denormalize(data);
+    }).forEach(function (exercise) {
+      _this.exercises[exercise.id] = exercise;
     });
   }
 
   ExerciseRepository.prototype.findAll = function () {
-    return this.exercises;
+    return Object.values(this.exercises);
   };
 
   ExerciseRepository.prototype.findById = function (id) {
-    return this.exercises.find(function (ex) {
-      return ex.id === id;
-    }) || null;
+    return this.exercises[id] || null;
   };
 
-  ExerciseRepository.prototype.parse = function (jsonInput) {
-    return new _Exercise.Exercise(jsonInput.id, jsonInput.title, jsonInput.subtitle, jsonInput.detailsLink, jsonInput.exampleImage);
+  ExerciseRepository.prototype.findAllCustomExercises = function () {
+    return this.findAll().filter(function (exercise) {
+      return exercise.isCustom;
+    });
+  };
+
+  ExerciseRepository.prototype.getNextCustomId = function () {
+    var allCustomIds = this.findAllCustomExercises().map(function (exercise) {
+      return parseInt(exercise.id);
+    });
+
+    if (allCustomIds.length === 0) {
+      return '1';
+    }
+
+    var nextId = Math.max.apply(Math, allCustomIds) + 1;
+    return nextId.toString();
+  };
+
+  ExerciseRepository.prototype.delete = function (exercise) {
+    if (!exercise.isCustom) {
+      return;
+    }
+
+    delete this.exercises[exercise.id];
+    this.persistAll();
+  };
+
+  ExerciseRepository.prototype.deleteAll = function () {
+    var _this = this;
+
+    this.findAllCustomExercises().forEach(function (exercise) {
+      _this.delete(exercise);
+    });
+  };
+
+  ExerciseRepository.prototype.persist = function (exercise) {
+    // It only makes sense to persist custom exercises.
+    if (!exercise.isCustom) {
+      return;
+    }
+
+    this.exercises[exercise.id] = exercise;
+    this.persistAll();
+  };
+
+  ExerciseRepository.prototype.persistAll = function () {
+    var data = this.findAllCustomExercises().map(this.normalize);
+    localStorage.setItem('customExercises', JSON.stringify(data));
+  };
+
+  ExerciseRepository.prototype.denormalize = function (jsonInput) {
+    return new _Exercise.Exercise(jsonInput.id, jsonInput.title, jsonInput.subtitle, jsonInput.detailsLink, jsonInput.exampleImage, jsonInput.isCustom || false);
+  };
+
+  ExerciseRepository.prototype.normalize = function (exercise) {
+    return {
+      id: exercise.id,
+      title: exercise.title,
+      subtitle: exercise.subtitle,
+      exampleImage: exercise.image,
+      isCustom: exercise.isCustom
+    };
   };
 
   return ExerciseRepository;
@@ -380,13 +451,8 @@ function () {
   }
 
   CardRepository.prototype.persist = function (card) {
-    var _this = this;
-
     this.cards[card.exercise.id] = card;
-    var serializedCards = Object.values(this.cards).map(function (card) {
-      return _this.normalize(card);
-    });
-    localStorage.setItem('cards', JSON.stringify(serializedCards));
+    this.persistAll();
   };
 
   CardRepository.prototype.findByExerciseId = function (exerciseId) {
@@ -414,11 +480,12 @@ function () {
 
   CardRepository.prototype.delete = function (card) {
     delete this.cards[card.exercise.id];
+    this.persistAll();
   };
 
   CardRepository.prototype.deleteAll = function () {
     this.cards = {};
-    localStorage.removeItem('cards');
+    this.persistAll();
   };
 
   CardRepository.prototype.init = function () {
@@ -436,6 +503,15 @@ function () {
     cards.forEach(function (card) {
       _this.cards[card.exercise.id] = card;
     });
+  };
+
+  CardRepository.prototype.persistAll = function () {
+    var _this = this;
+
+    var serializedCards = Object.values(this.cards).map(function (card) {
+      return _this.normalize(card);
+    });
+    localStorage.setItem('cards', JSON.stringify(serializedCards));
   };
 
   CardRepository.prototype.normalize = function (card) {
@@ -12483,13 +12559,15 @@ exports.SettingsManager = void 0;
 var SettingsManager =
 /** @class */
 function () {
-  function SettingsManager(cardInitializer, cardRepository) {
+  function SettingsManager(cardInitializer, cardRepository, exerciseRepository) {
     this.cardInitializer = cardInitializer;
     this.cardRepository = cardRepository;
+    this.exerciseRepository = exerciseRepository;
   }
 
   SettingsManager.prototype.resetAll = function () {
     this.cardRepository.deleteAll();
+    this.exerciseRepository.deleteAll();
     this.cardInitializer.initialize();
   };
 
@@ -12497,7 +12575,33 @@ function () {
 }();
 
 exports.SettingsManager = SettingsManager;
-},{}],"js/settings.ts":[function(require,module,exports) {
+},{}],"js/Exercise/CustomExerciseFactory.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CustomExerciseFactory = void 0;
+
+var _Exercise = require("./Exercise");
+
+var CustomExerciseFactory =
+/** @class */
+function () {
+  function CustomExerciseFactory(exerciseRepository) {
+    this.exerciseRepository = exerciseRepository;
+  }
+
+  CustomExerciseFactory.prototype.create = function (title, imageLink) {
+    var id = this.exerciseRepository.getNextCustomId();
+    return new _Exercise.Exercise(id, title, 'Custom Exercise', '', imageLink, true);
+  };
+
+  return CustomExerciseFactory;
+}();
+
+exports.CustomExerciseFactory = CustomExerciseFactory;
+},{"./Exercise":"js/Exercise/Exercise.ts"}],"js/settings.ts":[function(require,module,exports) {
 "use strict";
 
 var _ExerciseRepository = require("./Exercise/ExerciseRepository");
@@ -12512,18 +12616,31 @@ var _CardInitializer = require("./Card/CardInitializer");
 
 var _SettingsManager = require("./Settings/SettingsManager");
 
+var _CustomExerciseFactory = require("./Exercise/CustomExerciseFactory");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var exerciseRepository = new _ExerciseRepository.ExerciseRepository();
 var cardRepository = new _CardRepository.CardRepository(exerciseRepository);
 var cardInitializer = new _CardInitializer.CardInitializer(cardRepository, exerciseRepository);
-var settingsManager = new _SettingsManager.SettingsManager(cardInitializer, cardRepository);
+var settingsManager = new _SettingsManager.SettingsManager(cardInitializer, cardRepository, exerciseRepository);
+var customExerciseFactory = new _CustomExerciseFactory.CustomExerciseFactory(exerciseRepository);
 cardInitializer.initialize();
 new _vue.default({
   el: '#app',
   data: {
     cards: cardRepository.findAll(),
-    maxLevel: _data.default.maximumLevel
+    maxLevel: _data.default.maximumLevel,
+    showExerciseForm: false,
+    exercise: customExerciseFactory.create('', '')
+  },
+  created: function created() {
+    var self = this;
+    window.addEventListener('keydown', function (e) {
+      if (e.key == 'Escape') {
+        self.closeExerciseForm();
+      }
+    });
   },
   methods: {
     setLevel: function setLevel(card, level) {
@@ -12534,7 +12651,7 @@ new _vue.default({
       cardRepository.persist(card);
     },
     resetAll: function resetAll() {
-      var confirmed = window.confirm('This will reset all settings, are you sure you want to continue?');
+      var confirmed = window.confirm('This will reset all settings, and remove all your custom exercises. Are you sure you want to continue?');
 
       if (!confirmed) {
         return;
@@ -12543,6 +12660,31 @@ new _vue.default({
       settingsManager.resetAll();
       this.cards = cardRepository.findAll();
       this.$forceUpdate();
+    },
+    persistCustomExercise: function persistCustomExercise() {
+      exerciseRepository.persist(this.exercise);
+      cardInitializer.initialize();
+      this.cards = cardRepository.findAll();
+      this.closeExerciseForm();
+    },
+    deleteCustomExercise: function deleteCustomExercise(card) {
+      var confirmed = window.confirm('Delete "' + card.exercise.title + '" ?');
+
+      if (!confirmed) {
+        return;
+      }
+
+      cardRepository.delete(card);
+      exerciseRepository.delete(card.exercise);
+      this.cards = cardRepository.findAll();
+    },
+    editCustomExercise: function editCustomExercise(card) {
+      this.exercise = card.exercise;
+      this.showExerciseForm = true;
+    },
+    closeExerciseForm: function closeExerciseForm() {
+      this.showExerciseForm = false;
+      this.exercise = customExerciseFactory.create('', '');
     }
   },
   computed: {
@@ -12559,10 +12701,20 @@ new _vue.default({
           cardRepository.persist(card);
         });
       }
+    },
+    customExerciseCards: function customExerciseCards() {
+      return this.cards.filter(function (card) {
+        return card.exercise.isCustom;
+      });
+    },
+    regularExerciseCards: function regularExerciseCards() {
+      return this.cards.filter(function (card) {
+        return !card.exercise.isCustom;
+      });
     }
   }
 });
-},{"./Exercise/ExerciseRepository":"js/Exercise/ExerciseRepository.ts","./Card/CardRepository":"js/Card/CardRepository.ts","./data.json":"js/data.json","vue":"../node_modules/vue/dist/vue.common.js","./Card/CardInitializer":"js/Card/CardInitializer.ts","./Settings/SettingsManager":"js/Settings/SettingsManager.ts"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./Exercise/ExerciseRepository":"js/Exercise/ExerciseRepository.ts","./Card/CardRepository":"js/Card/CardRepository.ts","./data.json":"js/data.json","vue":"../node_modules/vue/dist/vue.common.js","./Card/CardInitializer":"js/Card/CardInitializer.ts","./Settings/SettingsManager":"js/Settings/SettingsManager.ts","./Exercise/CustomExerciseFactory":"js/Exercise/CustomExerciseFactory.ts"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -12590,7 +12742,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43809" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33209" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

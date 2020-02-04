@@ -14,8 +14,7 @@ export class CardRepository {
 
     persist(card: Card) {
         this.cards[card.exercise.id] = card;
-        var serializedCards = Object.values(this.cards).map(card => this.normalize(card));
-        localStorage.setItem('cards', JSON.stringify(serializedCards));
+        this.persistAll();
     }
 
     findByExerciseId(exerciseId: string): Card|null {
@@ -42,11 +41,12 @@ export class CardRepository {
 
     delete(card: Card) {
         delete this.cards[card.exercise.id];
+        this.persistAll();
     }
 
     deleteAll() {
         this.cards = {};
-        localStorage.removeItem('cards');
+        this.persistAll();
     }
 
     private init() {
@@ -58,6 +58,11 @@ export class CardRepository {
         cards.forEach(card => {
             this.cards[card.exercise.id] = card;
         });
+    }
+
+    private persistAll() {
+        var serializedCards = Object.values(this.cards).map(card => this.normalize(card));
+        localStorage.setItem('cards', JSON.stringify(serializedCards));
     }
 
     private normalize(card: Card): Object {

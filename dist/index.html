@@ -25,7 +25,7 @@
         <main id="app">
             <div class="card" v-if="currentCard">
                 <div class="card-header">
-                    <a :href="currentCard.exercise.detailsLink" target="_blank" class="float-right">
+                    <a :href="currentCard.exercise.detailsLink" target="_blank" class="float-right" v-if="currentCard.exercise.detailsLink">
                         View homework details
                     </a>
                     <div class="card-title h5">{{ currentCard.exercise.title }}</div>
@@ -52,7 +52,7 @@
                         <button class="btn btn-lg" v-on:click="reset">Give me one more exercise!</button>
                     </template>
                 </div>
-                <div class="card-image">
+                <div class="card-image" v-if="currentCard.exercise.image">
                     <img :src="currentCard.exercise.image" class="img-responsive">
                 </div>
             </div>

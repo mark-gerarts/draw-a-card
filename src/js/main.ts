@@ -33,6 +33,10 @@ new Vue({
         reset: function() {
             this.finished = false;
             this.currentCard = cardSelector.getNextCard();
+        },
+
+        skipExercise: function() {
+            this.currentCard = cardSelector.getNextCard();
         }
     }
 });

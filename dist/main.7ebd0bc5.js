@@ -12552,6 +12552,9 @@ new _vue.default({
     reset: function reset() {
       this.finished = false;
       this.currentCard = cardSelector.getNextCard();
+    },
+    skipExercise: function skipExercise() {
+      this.currentCard = cardSelector.getNextCard();
     }
   }
 });

@@ -37,7 +37,7 @@
 
                 <div class="card-body">
                     <template v-if="!finished">
-                        <p>Rate your work:</p>
+                        <p>Rate your work, or <a href="#" v-on:click="skipExercise">skip this exercise.</a></p>
                         <div class="btn-group btn-group-block">
                             <button class="btn btn-lg" v-on:click="evaluateCard(-1)">
                                 It didn't go well

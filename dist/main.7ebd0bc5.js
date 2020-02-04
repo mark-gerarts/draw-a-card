@@ -393,6 +393,10 @@ function () {
     return this.cards[exerciseId] || null;
   };
 
+  CardRepository.prototype.exists = function (exerciseId) {
+    return this.findByExerciseId(exerciseId) !== null;
+  };
+
   CardRepository.prototype.findRandom = function () {
     var keys = Object.keys(this.cards);
     return this.cards[_ArrayUtils.ArrayUtils.randomElement(keys)];
@@ -408,8 +412,12 @@ function () {
     });
   };
 
+  CardRepository.prototype.delete = function (card) {
+    delete this.cards[card.exercise.id];
+  };
+
   CardRepository.prototype.deleteAll = function () {
-    this.cards = [];
+    this.cards = {};
     localStorage.removeItem('cards');
   };
 
@@ -421,6 +429,9 @@ function () {
     var cards = JSON.parse(cardData);
     cards = cards.map(function (card) {
       return _this.denormalize(card);
+    });
+    cards = cards.filter(function (card) {
+      return card !== null;
     });
     cards.forEach(function (card) {
       _this.cards[card.exercise.id] = card;
@@ -436,7 +447,13 @@ function () {
   };
 
   CardRepository.prototype.denormalize = function (data) {
-    var exercise = this.exerciseRepository.findById(data.exerciseId);
+    var exercise = this.exerciseRepository.findById(data.exerciseId); // It is possible the exercise is removed from the data JSON. In that
+    // case it doesn't make sense to return a card.
+
+    if (!exercise) {
+      return null;
+    }
+
     return new _Card.Card(exercise, data.level, data.enabled);
   };
 
@@ -463,20 +480,23 @@ function () {
   }
 
   CardInitializer.prototype.initialize = function () {
-    var _this = this; // We initialized before.
+    var _this = this;
 
+    var defaultCards = this.getAllDefaultCards(); // Check if we need to add new exercises.
 
-    if (this.cardRepository.findAll().length > 0) {
-      return;
-    }
+    defaultCards.forEach(function (card) {
+      if (!_this.cardRepository.exists(card.exercise.id)) {
+        _this.cardRepository.persist(card);
+      }
+    });
+  };
 
+  CardInitializer.prototype.getAllDefaultCards = function () {
     var defaultLevel = 1;
     var defaultStatus = true;
     var allExercises = this.exerciseRepository.findAll();
-    allExercises.forEach(function (exercise) {
-      var card = new _Card.Card(exercise, defaultLevel, defaultStatus);
-
-      _this.cardRepository.persist(card);
+    return allExercises.map(function (exercise) {
+      return new _Card.Card(exercise, defaultLevel, defaultStatus);
     });
   };
 

@@ -12,18 +12,23 @@ export class CardInitializer {
     }
 
     initialize() {
-        // We initialized before.
-        if (this.cardRepository.findAll().length > 0) {
-            return;
-        }
+        var defaultCards = this.getAllDefaultCards();
 
+        // Check if we need to add new exercises.
+        defaultCards.forEach(card => {
+            if (!this.cardRepository.exists(card.exercise.id)) {
+                this.cardRepository.persist(card);
+            }
+        });
+    }
+
+    private getAllDefaultCards() {
         const defaultLevel = 1;
         const defaultStatus = true;
         const allExercises = this.exerciseRepository.findAll();
 
-        allExercises.forEach(exercise => {
-            var card = new Card(exercise, defaultLevel, defaultStatus);
-            this.cardRepository.persist(card);
+        return allExercises.map(exercise => {
+            return new Card(exercise, defaultLevel, defaultStatus);
         });
     }
 }

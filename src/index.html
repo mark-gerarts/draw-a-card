@@ -19,9 +19,8 @@
                 <a href="/settings/index.html" class="btn btn-link">Settings</a>
             </section>
         </header>
-        <div class="hero hero-sm hide-sm">
-            <h1>Your exercise for today:</h1>
-        </div>
+        <div class="hero hero-sm hide-sm"></div>
+        <h1>Your exercise for today:</h1>
         <main id="app">
             <div class="card" v-if="currentCard">
                 <div class="card-header">
@@ -60,6 +59,13 @@
                     <img :src="currentCard.exercise.image" class="img-responsive">
                 </div>
             </div>
+            <div class="toast toast-primary" v-else>
+                <h4>Oh no!</h4>
+                It seems you don't have any exercises enabled. Go to the
+                <a href="/settings/index.html">settings page</a> to fix this!
+            </div>
+
+            <div class="hero hero-sm"></div>
         </main>
     </div>
 

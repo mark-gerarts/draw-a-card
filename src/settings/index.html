@@ -23,7 +23,6 @@
         <h1>Settings</h1>
 
         <main id="app">
-
             <p>
                 You can configure the exercises here. Disabled exercises won't
                 appear at all. Higher level exercises have a lower chance at
@@ -78,8 +77,8 @@
             </table>
 
             <div class="hero hero-sm"></div>
-
             <h2 class="py-2">Custom exercises</h2>
+
             <table class="table">
                 <thead>
                     <tr>
@@ -138,8 +137,6 @@
                 Add a custom exercise
             </button>
 
-            <div class="hero hero-sm"></div>
-
             <div class="modal"
                  v-bind:class="{ active: showExerciseForm}">
                 <div class="modal-container">
@@ -150,7 +147,7 @@
                            v-on:click="closeExerciseForm"
                            >
                         </a>
-                        <div class="modal-title h5">Modal title</div>
+                        <div class="modal-title h5">Custom exercise</div>
                     </div>
                     <div class="modal-body">
                         <div class="content">
@@ -181,6 +178,20 @@
                     </div>
                 </div>
             </div>
+
+            <div class="hero hero-sm"></div>
+            <h2 class="py-2">Export/import</h2>
+
+            <p>
+                All data is kept in your browser's local storage. This is lost
+                when you clear your browsing data. It also means that your
+                progress isn't shared across devices.
+            </p>
+
+            <button class="btn btn-primary">Export data</button>
+            <button class="btn btn-primary">Import data</button>
+
+            <div class="hero hero-sm"></div>
         </main>
     </div>
 

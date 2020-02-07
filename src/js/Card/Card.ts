@@ -14,8 +14,8 @@ export class Card {
 
     evaluate(rating: number) {
         this.level += rating;
-        if (this.level < 0) {
-            this.level = 0;
+        if (this.level < 1) {
+            this.level = 1;
         }
         if (this.level > data.maximumLevel) {
             this.level = data.maximumLevel;
